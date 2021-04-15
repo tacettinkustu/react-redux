@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { bindActionCreators } from "redux";
 import { connect } from "react-redux";
 import * as categoryActions from "../../redux/actions/categoryActions";
+import * as productActions from "../../redux/actions/productActions";
 import { Badge, ListGroup, ListGroupItem } from "reactstrap";
 
 class CategoryList extends Component {
@@ -10,12 +11,15 @@ class CategoryList extends Component {
 
     this.selectCategory = (category) => {
       this.props.actions.changeCategory(category);
+      this.props.actions.getProducts(category.id);
     };
   }
   render() {
     return (
       <div>
-        <h3><Badge color="warning">Categories</Badge></h3>
+        <h3>
+          <Badge color="warning">Categories</Badge>
+        </h3>
         <ListGroup>
           {this.props.categories.map((category) => (
             <ListGroupItem
@@ -51,6 +55,8 @@ function mapDispatchToState(dispatch) {
         categoryActions.changeCategory,
         dispatch
       ),
+      getProducts: bindActionCreators(
+        productActions.getProducts, dispatch),
     },
   };
 }
