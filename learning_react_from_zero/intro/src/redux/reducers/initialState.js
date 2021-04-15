@@ -1,5 +1,7 @@
-export default function initialState(){
-    return {
-        currentCategory : { categoryName : "Beverages"}
-    }
+const initialState = {
+        currentCategory : { categoryName : "Beverages"},
+        categories : [],
+        products : {}
 }
+
+export default initialState;
