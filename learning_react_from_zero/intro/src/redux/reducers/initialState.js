@@ -2,7 +2,8 @@ const initialState = {
         currentCategory : {},
         categories : [],
         products :[],
-        cart : []
+        cart : [],
+        post:{}
 }
 
 export default initialState;
