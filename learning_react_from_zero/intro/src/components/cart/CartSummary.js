@@ -7,6 +7,10 @@ import {
   Badge,
 } from "reactstrap";
 import { connect } from "react-redux";
+import {bindActionCreators} from "redux"
+import * as cartActions from "../../redux/actions/cartActions"
+import { Link } from "react-router-dom";
+import alertify from "alertifyjs";
 
 class CartSummary extends Component {
   emptyCart() {
@@ -18,6 +22,10 @@ class CartSummary extends Component {
       </UncontrolledDropdown>
     );
   }
+  removeItem(item){
+    this.props.actions.removeItem(item);
+    alertify.error(`${item.product.productName} deleted from cart`)
+  }
 
   renderCart() {
     return (
@@ -28,13 +36,14 @@ class CartSummary extends Component {
         <DropdownMenu right>
           {this.props.cart.map((item) => (
             <DropdownItem>
-              {item.product.productName}{" "}
+              <Badge color="danger" onClick={()=>this.removeItem(item)}>X</Badge>
+              {" "}{item.product.productName}{" "}
               <Badge color="success">{item.quantity}</Badge>
             </DropdownItem>
           ))}
 
           <DropdownItem divider />
-          <DropdownItem>Reset</DropdownItem>
+          <DropdownItem><Link to="/cart">Go to cart</Link></DropdownItem>
         </DropdownMenu>
       </UncontrolledDropdown>
     );
@@ -55,4 +64,12 @@ function mapStateToProps(state) {
   };
 }
 
-export default connect(mapStateToProps)(CartSummary);
+function mapDispatchToProps(dispatch) {
+  return {
+    actions: {
+      removeItem: bindActionCreators(cartActions.removeFromCart, dispatch),
+    },
+  };
+}
+
+export default connect(mapStateToProps,mapDispatchToProps)(CartSummary);
